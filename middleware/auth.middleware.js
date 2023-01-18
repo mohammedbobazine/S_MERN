@@ -14,7 +14,7 @@ module.exports.checkUser = (req, res, next) => {
         let user = await UserModel.findById(decodedToken.id);
         //console.log({ deconctedToken: decodedToken.id });
         res.locals.user = user;
-        console.log({ chekUser: user });
+        //console.log({ chekUser: user });
         next();
       }
     });
@@ -29,9 +29,9 @@ module.exports.requireAuth = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
       if (err) {
-        console.log(err);
+        // console.log(err);
       } else {
-        console.log({ decodededToken: decodedToken.id });
+        // console.log({ decodededToken: decodedToken.id });
         next();
       }
     });
