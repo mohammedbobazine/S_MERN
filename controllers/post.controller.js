@@ -66,3 +66,67 @@ module.exports.deletePost = (req, res) => {
     }
   });
 };
+
+module.exports.likePost = async (req, res) => {
+  if (!ObjectID.isValid(req.params.id) || !ObjectID.isValid(req.body.id))
+    return res.status(400).send("ID non valid :" + req.params.id);
+
+  try {
+    await PostModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $addToSet: {
+          likers: req.body.id,
+        },
+      },
+      { new: true }
+    );
+
+    await UserModel.findByIdAndUpdate(
+      req.body.id,
+      {
+        $addToSet: {
+          likes: req.params.id,
+        },
+      },
+      { new: true },
+      (err, docs) => {
+        if (!err) {
+          res.status(201).send(docs);
+        }
+      }
+    );
+  } catch (error) {}
+};
+
+module.exports.unlikePost = async (req, res) => {
+  if (!ObjectID.isValid(req.params.id) || !ObjectID.isValid(req.body.id))
+    return res.status(400).send("ID non valid :" + req.params.id);
+
+  try {
+    await PostModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: {
+          likers: req.body.id,
+        },
+      },
+      { new: true }
+    );
+
+    await UserModel.findByIdAndUpdate(
+      req.body.id,
+      {
+        $pull: {
+          likes: req.params.id,
+        },
+      },
+      { new: true },
+      (err, docs) => {
+        if (!err) {
+          res.status(201).send(docs);
+        }
+      }
+    );
+  } catch (error) {}
+};

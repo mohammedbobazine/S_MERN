@@ -109,8 +109,8 @@ module.exports.unfollow = async (req, res) => {
       $pull: { following: req.body.idToUnFollow },
     });
 
-    console.log(req.body);
-    console.log(req.params.id);
+    /*console.log(req.body);
+    console.log(req.params.id);*/
 
     await UserModel.findByIdAndUpdate(
       req.body.idToUnFollow,
