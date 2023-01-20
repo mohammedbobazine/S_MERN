@@ -10,7 +10,7 @@ module.exports.readPost = (req, res) => {
     } else {
       console.log("Error on get data : " + err);
     }
-  });
+  }).sort({ createdAt: -1 });
 };
 
 module.exports.createPost = async (req, res) => {
@@ -125,6 +125,106 @@ module.exports.unlikePost = async (req, res) => {
       (err, docs) => {
         if (!err) {
           res.status(201).send(docs);
+        }
+      }
+    );
+  } catch (error) {}
+};
+
+module.exports.commentPost = async (req, res) => {
+  if (
+    !ObjectID.isValid(req.params.id) ||
+    !ObjectID.isValid(req.body.commenterId)
+  )
+    return res.status(400).send("ID non valid :" + req.params.id);
+
+  console.log(req.body);
+  try {
+    return await PostModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: {
+          comments: {
+            commenterId: req.body.commenterId,
+            commenterPseudo: req.body.commenterPseudo,
+            text: req.body.text,
+            timestamp: new Date().getTime(),
+          },
+        },
+      },
+      { new: true },
+      (err, docs) => {
+        if (err) {
+          console.log(err);
+        } else {
+          return res.send(docs);
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports.editCommentPost = (req, res) => {
+  if (!ObjectID.isValid(req.params.id) || !ObjectID.isValid(req.body.commentId))
+    return res.status(400).send("ID non valid :" + req.params.id);
+  /*console.log(req.body);
+  console.log(req.params.id);*/
+
+  try {
+    return PostModel.findById(req.params.id, (err, docs) => {
+      const TheComment = docs.comments.find((c) => {
+        /*  console.log(c._id.valueOf());
+        console.log(req.body.commentId);
+        console.log(c._id.equals(req.body.commentId));*/
+        if (c._id.equals(req.body.commentId)) {
+          return c;
+        }
+      });
+      //console.log({ lecommentaire: TheComment });
+      if (!TheComment) {
+        return res.status(404).send("Comment Not found");
+      } else {
+        TheComment.text = req.body.text;
+
+        return docs.save((err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            res.status(200).send(docs);
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.deleteCommentPost = (req, res) => {
+  if (!ObjectID.isValid(req.params.id)) {
+    return res.status(400).send("ID non valid :" + req.params.id);
+  }
+
+  try {
+    return PostModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: {
+          comments: {
+            _id: req.body.commentId,
+          },
+        },
+      },
+      {
+        new: true,
+      },
+      (err, docs) => {
+        if (!err) {
+          return res.send(docs);
+        } else {
+          return res.status(400).send(err);
         }
       }
     );
