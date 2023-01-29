@@ -39,3 +39,16 @@ module.exports.singInErrors = (err) => {
 
   return errors;
 };
+
+module.exports.uploadErrors = (err) => {
+  let errors = { format: "", maxSize: "" };
+
+  if (err.message.includes("Format d'image invalide")) {
+    errors.format = "Format incompatible";
+  }
+
+  if (err.message.includes("capcité depasser")) {
+    errors.maxSize = "Le Fichier dépasse 500ko";
+  }
+  return errors;
+};
