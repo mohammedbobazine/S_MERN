@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { UidContext } from "./components/Routes/AppContext.js";
 import Chemins from "./components/Routes/index.js";
+import axios from "axios";
 
 const App = () => {
+  const [uid, setUid] = useState(null);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      await axios({
+        method: "get",
+        url: `${process.env.REACT_APP_API_URL}/jwtid`,
+        withCredentials: true,
+      })
+        .then((res) => {
+          console.log(res);
+          setUid(res.data);
+        })
+        .catch((err) => {
+          console.log("No Token");
+        });
+    };
+    fetchToken();
+  }, [uid]);
   return (
-    <div>
+    <UidContext.Provider value={uid}>
       <Chemins />
-    </div>
+    </UidContext.Provider>
   );
 };
 

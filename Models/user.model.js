@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       max: 1024,
-      minlenght: 6,
+      minlength: 6,
     },
     picure: {
       type: String,

@@ -10,11 +10,11 @@ module.exports.singUpErrors = (err) => {
   }
 
   if (err.message.includes("email")) {
-    errors.pseudo = "Email incorrect ";
+    errors.email = "Email incorrect ";
   }
 
   if (err.message.includes("password")) {
-    errors.pseudo = "le mot de pass de faire plus de 6 caractère";
+    errors.password = "le mot de pass dois faire plus de 6 caractère";
   }
 
   if (err.code === 11000 && Object.keys(err.keyValue)[0].includes("pseudo")) {
