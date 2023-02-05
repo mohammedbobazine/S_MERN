@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import Log from "../components/Log/index";
+import UpdatePorfil from "../components/Porfil/UpdatePorfil";
 
 import { UidContext } from "../components/Routes/AppContext";
 
@@ -8,7 +9,7 @@ const Profil = () => {
   return (
     <div className="profil-page">
       {uid ? (
-        <h1>Update page</h1>
+        <UpdatePorfil />
       ) : (
         <div className="log-container">
           <Log singin={false} singup={true} />
