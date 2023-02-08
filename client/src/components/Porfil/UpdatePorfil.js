@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateBio } from "../../actions/user.action";
 import LeftNav from "../LeftNav";
 import { dateParser } from "../Utils";
+import FollowHandler from "./FollowHandler";
 import UplaodImg from "./UplaodImg";
 
 const UpdatePorfil = () => {
@@ -78,7 +79,10 @@ const UpdatePorfil = () => {
                       <li key={user._id}>
                         <img src={user.picture} alt="user-pic" />
                         <h4>{user.pseudo}</h4>
-                        <h4>FOLLOW</h4>
+                        <div className="follow-handler">
+                          {" "}
+                          <FollowHandler idToFollow={user._id} />
+                        </div>
                       </li>
                     );
                   }
@@ -103,7 +107,9 @@ const UpdatePorfil = () => {
                       <li key={user._id}>
                         <img src={user.picture} alt="user-pic" />
                         <h4>{user.pseudo}</h4>
-                        <h4>FOLLOW</h4>
+                        <div className="follow-handler">
+                          <FollowHandler idToFollow={user._id} />
+                        </div>
                       </li>
                     );
                   }
