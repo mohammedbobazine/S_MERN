@@ -1,5 +1,4 @@
 import axios from "axios";
-import isFQDN from "validator/lib/isFQDN";
 
 export const GET_USER = "GET_USER";
 export const UPLOAD_PICTURE = "UPLOAD_PICTURE";
@@ -64,24 +63,30 @@ export const followUser = (follwerId, idToFollow) => {
       method: "patch",
       url: `${process.env.REACT_APP_API_URL}/api/user/follow/${follwerId}`,
       data: idToFollow,
-    }).then((res) => {
-      dispatch({ type: FOLLOW_USER, payload: idToFollow }).catch((err) => {
+    })
+      .then((res) => {
+        dispatch({ type: FOLLOW_USER, payload: idToFollow });
+      })
+      .catch((err) => {
         console.log(err);
       });
-    });
   };
 };
 
 export const unfollowUser = (follwerId, idToUnFollow) => {
+  idToUnFollow = idToUnFollow.idToFollow;
+
   return (dispatch) => {
     return axios({
       method: "patch",
       url: `${process.env.REACT_APP_API_URL}/api/user/unfollow/${follwerId}`,
-      data: idToUnFollow,
-    }).then((res) => {
-      dispatch({ type: UNFOLLOW_USER, payload: idToUnFollow }).catch((err) => {
+      data: { idToUnFollow: idToUnFollow },
+    })
+      .then((res) => {
+        dispatch({ type: UNFOLLOW_USER, payload: idToUnFollow });
+      })
+      .catch((err) => {
         console.log(err);
       });
-    });
   };
 };

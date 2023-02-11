@@ -75,9 +75,6 @@ module.exports.follow = async (req, res) => {
       $addToSet: { following: req.body.idToFollow },
     });
 
-    console.log(req.body);
-    console.log(req.params.id);
-
     await UserModel.findByIdAndUpdate(
       req.body.idToFollow,
       { $addToSet: { followers: req.params.id } },
@@ -101,16 +98,18 @@ module.exports.unfollow = async (req, res) => {
   if (
     !ObjectID.isValid(req.params.id) ||
     !ObjectID.isValid(req.body.idToUnFollow)
-  )
+  ) {
     return res.status(400).send("ID non valid :" + req.params.id);
+  }
 
   try {
-    await UserModel.findByIdAndUpdate(req.params.id, {
-      $pull: { following: req.body.idToUnFollow },
-    });
-
-    /*console.log(req.body);
-    console.log(req.params.id);*/
+    await UserModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: { following: req.body.idToUnFollow },
+      },
+      { new: true, upsert: true }
+    );
 
     await UserModel.findByIdAndUpdate(
       req.body.idToUnFollow,
@@ -124,7 +123,5 @@ module.exports.unfollow = async (req, res) => {
         }
       }
     );
-  } catch (error) {
-    //return res.status(500).json({ message: error });
-  }
+  } catch (error) {}
 };
