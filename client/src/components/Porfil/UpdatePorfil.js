@@ -81,7 +81,10 @@ const UpdatePorfil = () => {
                         <h4>{user.pseudo}</h4>
                         <div className="follow-handler">
                           {" "}
-                          <FollowHandler idToFollow={user._id} />
+                          <FollowHandler
+                            idToFollow={user._id}
+                            type={"suggestion"}
+                          />
                         </div>
                       </li>
                     );
@@ -92,6 +95,9 @@ const UpdatePorfil = () => {
           </div>
         </div>
       )}
+      {/**
+        PARTIE DES FOLLOWERS
+         */}
       {followersPopup && (
         <div className="popup-profil-container">
           <div className="modal">
@@ -108,7 +114,10 @@ const UpdatePorfil = () => {
                         <img src={user.picture} alt="user-pic" />
                         <h4>{user.pseudo}</h4>
                         <div className="follow-handler">
-                          <FollowHandler idToFollow={user._id} />
+                          <FollowHandler
+                            idToFollow={user._id}
+                            type={"suggestion"}
+                          />
                         </div>
                       </li>
                     );

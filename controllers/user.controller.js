@@ -64,6 +64,8 @@ module.exports.deleteUser = async (req, res) => {
 module.exports.follow = async (req, res) => {
   /** Vérification des ID's  */
 
+  /*console.log({ bodyBE: req.body });
+  console.log({ paramsBE: req.params });*/
   if (
     !ObjectID.isValid(req.params.id) ||
     !ObjectID.isValid(req.body.idToFollow)
@@ -95,6 +97,7 @@ module.exports.follow = async (req, res) => {
 //***********unfolling***********
 
 module.exports.unfollow = async (req, res) => {
+  // console.log({ params: req.params.id, body: req.body });
   if (
     !ObjectID.isValid(req.params.id) ||
     !ObjectID.isValid(req.body.idToUnFollow)
