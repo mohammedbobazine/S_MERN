@@ -1,10 +1,17 @@
 import axios from "axios";
-
+/**
+ * PARTIE POST
+ */
 export const GET_POSTS = "GET_POSTS";
 export const LIKE_POST = "LIKE_POST";
 export const UNLIKE_POST = "UNLIKE _POST";
 export const UPDATE_POST = "UPDATE_POST";
 export const DELETE_POST = "DELETE_POST";
+
+/*
+PARTIE COMMENTAIRE
+ */
+export const ADD_COMMENT = "ADD_COMMENT";
 
 export const getPosts = (num) => {
   return (dispatch) => {
@@ -76,6 +83,22 @@ export const deletePost = (postId) => {
     })
       .then((res) => {
         dispatch({ type: DELETE_POST, payload: { postId } });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const addComment = (postId, commenterId, text, commenterPseudo) => {
+  return (dispatch) => {
+    return axios({
+      method: "patch",
+      url: `${process.env.REACT_APP_API_URL}/api/post/comment-post/${postId}`,
+      data: { commenterId, text, commenterPseudo },
+    })
+      .then((res) => {
+        dispatch({ type: ADD_COMMENT, payload: { postId } });
       })
       .catch((err) => {
         console.log(err);
