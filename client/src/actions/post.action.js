@@ -12,6 +12,8 @@ export const DELETE_POST = "DELETE_POST";
 PARTIE COMMENTAIRE
  */
 export const ADD_COMMENT = "ADD_COMMENT";
+export const EDIT_COMMMENT = "EDIT_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";
 
 export const getPosts = (num) => {
   return (dispatch) => {
@@ -99,6 +101,44 @@ export const addComment = (postId, commenterId, text, commenterPseudo) => {
     })
       .then((res) => {
         dispatch({ type: ADD_COMMENT, payload: { postId } });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const editComment = (postId, commentId, text) => {
+  return (dispatch) => {
+    return axios({
+      method: "patch",
+      url: `${process.env.REACT_APP_API_URL}/api/post/edit-comment-post/${postId}`,
+      data: { commentId, text },
+    })
+      .then((res) => {
+        dispatch({
+          type: EDIT_COMMMENT,
+          payload: { postId, commentId, text },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const deleteComment = (postId, commentId) => {
+  return (dispatch) => {
+    return axios({
+      method: "patch",
+      url: `${process.env.REACT_APP_API_URL}/api/post/delete-comment-post/${postId}`,
+      data: { commentId },
+    })
+      .then((res) => {
+        dispatch({
+          type: DELETE_COMMENT,
+          payload: { postId, commentId },
+        });
       })
       .catch((err) => {
         console.log(err);

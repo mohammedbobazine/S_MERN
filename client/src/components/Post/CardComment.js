@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addComment, getPosts } from "../../actions/post.action";
 import FollowHandler from "../Porfil/FollowHandler";
 import { isEmpty, timestampParser } from "../Utils";
+import EditeDeleteComment from "./EditeDeleteComment";
 
 const CardComment = ({ post }) => {
   const [text, setText] = useState("");
@@ -64,6 +65,7 @@ const CardComment = ({ post }) => {
                 <span>{timestampParser(comment.timestamp)}</span>
               </div>
               <p>{comment.text}</p>
+              <EditeDeleteComment comment={comment} postId={post._id} />
             </div>
           </div>
         );

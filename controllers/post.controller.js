@@ -204,8 +204,6 @@ module.exports.commentPost = async (req, res) => {
 module.exports.editCommentPost = (req, res) => {
   if (!ObjectID.isValid(req.params.id) || !ObjectID.isValid(req.body.commentId))
     return res.status(400).send("ID non valid :" + req.params.id);
-  /*console.log(req.body);
-  console.log(req.params.id);*/
 
   try {
     return PostModel.findById(req.params.id, (err, docs) => {
